@@ -8,7 +8,9 @@ import com.example.userapi.domain.model.UserAdapterDto
 import com.example.userapi.common.security.JwtProvider
 import com.example.userapi.application.port.`in`.UserUseCase
 import com.example.userapi.application.port.out.UserRepositoryPort
+import com.example.userapi.domain.exception.InvalidPasswordException
 import com.example.userapi.domain.exception.UserExceptionConst
+import com.example.userapi.domain.exception.UserInfoFormattedException
 import com.example.userapi.domain.exception.UserNotFoundException
 import com.example.userapi.util.isValidEmail
 import com.example.userapi.util.isValidPassword
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import kotlin.IllegalArgumentException
 
 
 @Service
@@ -47,14 +50,13 @@ class UserService(
 
     private fun validationSignUp(request: UserPortDto.In.SignUpRequest) {
         if (!isValidEmail(request.email))
-            throw IllegalArgumentException("이메일 정규식을 확인해주세요.")
-        //throw MemberException(MemberErrorCode.NOT_FORMATTED_EMAIL)
+            throw UserInfoFormattedException(UserExceptionConst.NOT_FORMATTED_EMAIL)
 
         if (!isValidPassword(request.password))
-            throw IllegalArgumentException("영어 대문자, 영어 소문자, 숫자, 특수문자 중 3종류 이상으로 12자리 이상의 문자열 이어야 합니다.")
+            throw UserInfoFormattedException(UserExceptionConst.NOT_FORMATTED_PASSWORD)
 
         if (userRepository.existsByEmail(request.email)) {
-            throw IllegalArgumentException("이미 존재하는 이메일입니다.")
+            throw UserInfoFormattedException( UserExceptionConst.ALREADY_EXISTS_EMAIL)
         }
     }
 
@@ -65,7 +67,7 @@ class UserService(
             ?: throw UserNotFoundException(UserExceptionConst.NOT_EXISTS_USER)
 
         if (!passwordEncoder.matches(request.password, userDto.password)) {
-            throw IllegalArgumentException("비밀번호가 일치하지 않습니다.")
+            throw InvalidPasswordException(UserExceptionConst.INVALID_PASSWORD)
         }
 
     return UserPortDto.Out.TokenResponse(
@@ -160,6 +162,7 @@ class UserService(
             role = userEntity.role,
         )
     }
+
 
     /**
      * todo MEMBER validation

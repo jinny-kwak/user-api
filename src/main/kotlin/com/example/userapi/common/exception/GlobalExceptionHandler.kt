@@ -3,6 +3,8 @@ package com.example.userapi.common.exception
 import com.example.userapi.adapter.`in`.web.dto.ApiResponse
 import com.example.userapi.adapter.`in`.web.dto.ResponseFactory
 import com.example.userapi.domain.exception.EmailAlreadyExistException
+import com.example.userapi.domain.exception.InvalidPasswordException
+import com.example.userapi.domain.exception.UserInfoFormattedException
 import com.example.userapi.domain.exception.UserNotFoundException
 import io.jsonwebtoken.MalformedJwtException
 import jakarta.servlet.http.HttpServletRequest
@@ -59,6 +61,27 @@ class GlobalExceptionHandler {
     @ExceptionHandler(InvalidJwtFormatException::class)
     fun malformedJwtException(ex: InvalidJwtFormatException): ApiResponse<Nothing> {
         logger.error("JWT 토큰 형식 오류 발생: ${ex.message}", ex)
+        return ResponseFactory.fail(ex.getErrorCode(), ex.getErrorMessage())
+    }
+
+    @ResponseStatus(UNAUTHORIZED)
+    @ExceptionHandler(ForbiddenAccessException::class)
+    fun forbiddenAccessException(ex: ForbiddenAccessException): ApiResponse<Nothing> {
+        logger.error("접근 권한 오류 발생: ${ex.message}", ex)
+        return ResponseFactory.fail(ex.getErrorCode(), ex.getErrorMessage())
+    }
+
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(UserInfoFormattedException::class)
+    fun userInfoFormattedException(ex: UserInfoFormattedException): ApiResponse<Nothing> {
+        logger.error("회원가입 입력 포맷 오류 발생: ${ex.message}", ex)
+        return ResponseFactory.fail(ex.getErrorCode(), ex.getErrorMessage())
+    }
+
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(InvalidPasswordException::class)
+    fun invalidPasswordException(ex: InvalidPasswordException): ApiResponse<Nothing> {
+        logger.error("로그인 비밀번호 불일치: ${ex.message}", ex)
         return ResponseFactory.fail(ex.getErrorCode(), ex.getErrorMessage())
     }
 }
