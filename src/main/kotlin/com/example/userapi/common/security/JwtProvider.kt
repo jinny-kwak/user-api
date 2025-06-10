@@ -1,4 +1,4 @@
-package com.example.userapi.infrastructure.security
+package com.example.userapi.common.security
 
 import com.example.userapi.common.exception.CommonExceptionConst
 import com.example.userapi.common.exception.InvalidJwtFormatException

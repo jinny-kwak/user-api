@@ -1,4 +1,4 @@
-package com.example.userapi.config
+package com.example.userapi.common.configuration
 
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

@@ -1,8 +1,8 @@
-package com.example.userapi.config
+package com.example.userapi.common.configuration
 
-import com.example.userapi.infrastructure.security.JwtAuthenticationFilter
-import com.example.userapi.infrastructure.security.JwtProvider
-import com.example.userapi.infrastructure.security.UserDetailsServiceImpl
+import com.example.userapi.common.security.JwtAuthenticationFilter
+import com.example.userapi.common.security.JwtProvider
+import com.example.userapi.common.security.UserDetailsServiceImpl
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager

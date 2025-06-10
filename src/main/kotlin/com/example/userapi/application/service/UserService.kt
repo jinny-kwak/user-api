@@ -5,7 +5,7 @@ import com.example.userapi.adapter.`in`.web.dto.PageResponse
 import com.example.userapi.adapter.`in`.web.dto.UserPortDto
 import com.example.userapi.adapter.out.persistence.entity.User
 import com.example.userapi.domain.model.UserAdapterDto
-import com.example.userapi.infrastructure.security.JwtProvider
+import com.example.userapi.common.security.JwtProvider
 import com.example.userapi.application.port.`in`.UserUseCase
 import com.example.userapi.application.port.out.UserRepositoryPort
 import com.example.userapi.domain.exception.UserExceptionConst

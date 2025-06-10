@@ -1,4 +1,4 @@
-package com.example.userapi.infrastructure.security
+package com.example.userapi.common.security
 
 import com.example.userapi.application.port.out.UserRepositoryPort
 import com.example.userapi.domain.model.CustomUserDetails
