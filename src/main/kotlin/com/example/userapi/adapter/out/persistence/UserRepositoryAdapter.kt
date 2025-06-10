@@ -1,15 +1,14 @@
 package com.example.userapi.adapter.out.persistence
 
-import com.example.userapi.domain.model.UserAdapterDto
-import com.example.userapi.application.port.out.UserRepositoryPort
 import com.example.userapi.adapter.out.persistence.entity.User
 import com.example.userapi.adapter.out.persistence.repository.UserJpaRepository
+import com.example.userapi.application.port.out.UserRepositoryPort
 import com.example.userapi.domain.model.Role
+import com.example.userapi.domain.model.UserAdapterDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
-import kotlin.jvm.optionals.getOrNull
 
 @Component
 class UserRepositoryAdapter(

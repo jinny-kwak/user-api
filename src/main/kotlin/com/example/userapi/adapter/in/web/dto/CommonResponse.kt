@@ -1,7 +1,5 @@
 package com.example.userapi.adapter.`in`.web.dto
 
-import com.example.userapi.domain.model.UserAdapterDto
-
 data class ApiResponse<T>(
     val result: Result,
     val data: T? = null
