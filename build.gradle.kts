@@ -1,7 +1,8 @@
 plugins {
     kotlin("jvm") version "1.9.0"
-    id("org.springframework.boot") version "3.2.0"
+    id("org.springframework.boot") version "3.4.2"
     id("io.spring.dependency-management") version "1.1.0"
+    kotlin("plugin.spring") version "1.9.0" // @PreAuthorize 이슈로 추가
 }
 
 group = "com.example"
@@ -14,9 +15,9 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
@@ -24,7 +25,8 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
-    implementation("com.mysql:mysql-connector-j")
+    //implementation("mysql:mysql-connector-java:8.0.29")
+    runtimeOnly("com.mysql:mysql-connector-j:8.2.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage") // JUnit 4 제외

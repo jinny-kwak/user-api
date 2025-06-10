@@ -31,6 +31,7 @@ class JwtAuthenticationFilter(
                 details = WebAuthenticationDetailsSource().buildDetails(request)
             }
 
+            println("#### authentication = $authentication")
             SecurityContextHolder.getContext().authentication = authentication
         }
 

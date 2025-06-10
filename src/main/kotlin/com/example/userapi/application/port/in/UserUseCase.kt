@@ -1,13 +1,15 @@
 package com.example.userapi.application.port.`in`
 
-import com.example.userapi.adapter.`in`.web.dto.*
-import com.example.userapi.domain.model.User
+import com.example.userapi.adapter.`in`.web.dto.PageResponse
+import com.example.userapi.adapter.`in`.web.dto.UserPortDto
+import org.springframework.data.domain.Pageable
 
 interface UserUseCase {
-    fun signUp(request: SignUpRequest)
-    fun login(request: LoginRequest): TokenResponse
-    fun getUserInfo(currentUser: User): UserResponse
-    fun getAllUsers(): List<UserSummaryResponse>
-    fun updatePhone(currentUser: User, request: UpdatePhoneRequest)
-    fun adminUpdateUser(email: String, request: AdminUpdateRequest)
+    fun signUp(request: UserPortDto.In.SignUpRequest): UserPortDto.Out.SignUpResponse
+    fun login(request: UserPortDto.In.LoginRequest): UserPortDto.Out.TokenResponse
+    fun getUserBy(userId: Long): UserPortDto.Out.UserResponse
+    fun getUsers(pageable: Pageable, getUsersRequest: UserPortDto.In.GetUsersRequest): List<UserPortDto.Out.UsersResponse>
+    fun getUsers2(pageable: Pageable, getUsersRequest: UserPortDto.In.GetUsersRequest): PageResponse<UserPortDto.Out.UsersResponse>
+    fun updateUserInfoByMember(userId: Long, request: UserPortDto.In.UpdateUserInfoRequest): UserPortDto.Out.AdminUpdateResponse
+    fun updateUserInfoByAdmin(userId: Long, request: UserPortDto.In.UpdateUserInfoRequest): UserPortDto.Out.AdminUpdateResponse
 }
