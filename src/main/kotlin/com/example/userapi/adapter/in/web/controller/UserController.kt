@@ -73,10 +73,6 @@ class UserController(
         @RequestBody request: UserPortDto.In.UpdateUserInfoRequest,
         @AuthenticationPrincipal currentUser: CustomUserDetails  // @AuthenticationPrincipal을 사용하여 로그인된 사용자 정보 주입
     ): ApiResponse<UserPortDto.Out.AdminUpdateResponse> {
-        println("@@@ :${currentUser.id}")
-        println("@@@ :${currentUser.username}")
-        println("@@@ :${currentUser.password}")
-        println("@@@ :${currentUser.authorities}") // Role
 
         var updateUserInfo: UserPortDto.Out.AdminUpdateResponse? = null
 
