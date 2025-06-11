@@ -23,7 +23,7 @@ class UserController(
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    fun signUp(@RequestBody request: UserPortDto.In.SignUpRequest): ApiResponse<UserPortDto.Out.SignUpResponse> { // todo SignUpRequest validation 적용 필요
+    fun signUp(@RequestBody request: UserPortDto.In.SignUpRequest): ApiResponse<UserPortDto.Out.SignUpResponse> {
         val signUpResponse = userUseCase.signUp(request)
         return ResponseFactory.success(signUpResponse)
     }

@@ -63,6 +63,7 @@ class JwtProvider(
         try {
             !parseClaims(token).expiration.before(Date())
         } catch (e: Exception) {
+            // todo Exception 세분화 필요
             throw InvalidJwtFormatException(CommonExceptionConst.TOKEN_FORMAT_ERROR)
         }
 
