@@ -5,7 +5,7 @@ Content-Type: application/json
 {
   "email": "test@example.com",
   "password": "Abcdef123!@#",
-  "name": "홍길동",
+  "name": "관리자",
   "phone": "010-1234-5678"
 }
 
@@ -16,8 +16,8 @@ Content-Type: application/json
 {
   "email": "yunjin@example.com",
   "password": "Abcdef123!@#",
-  "name": "홍길동",
-  "phone": "010-1234-5678"
+  "name": "지니",
+  "phone": "010-1111-1111"
 }
 
 ### 로그인 - MEMBER
@@ -39,8 +39,8 @@ Content-Type: application/json
 }
 
 ### 회원 상세 조회 - MEMBER
-GET http://localhost:8080/api/v1/users/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZSI6Ik1FTUJFUiIsImlhdCI6MTc0OTM4NTMzMywiZXhwIjoxNzQ5Mzg4OTMzfQ.LAOZO4c7IB4stjfTuqc2akJmmwCC7FeXdZaAtD1_pHI
+GET http://localhost:8080/api/v1/users/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ5dW5qaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNzQ5NjA5NTYxLCJleHAiOjE3NDk2MTMxNjF9.lm0iKoNyQxHnGMQGCdhgCO6fhuUsYgl92QqwvIJBowo
 
 ### 회원 상세 조회 - ADMIN
 GET http://localhost:8080/api/v1/users/1
@@ -48,57 +48,46 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwic
 
 ### 회원 목록 조회 - ADMIN
 GET http://localhost:8080/api/v1/users?offset=0&limit=10
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZSI6Ik1FTUJFUiIsImlhdCI6MTc0OTM4NTE2MCwiZXhwIjoxNzQ5Mzg4NzYwfQ.tUZ6v-cRZzMjmtB7wnh68SWyvjgZ7tE3i9YU6p0_2oY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzQ5NjEwMDY0LCJleHAiOjE3NDk2MTM2NjR9.g6wM-0OEgFxExPZawD0UXOMmztnqjZAqVpNG9nQ9AU0
 
 ### 회원 목록 조회 - MEMBER
 GET http://localhost:8080/api/v1/users?offset=0&limit=10
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZSI6Ik1FTUJFUiIsImlhdCI6MTc0OTM4NDY4OCwiZXhwIjoxNzQ5Mzg4Mjg4fQ.CI-Pb54WgafihWi3yCQyoQh31uP8V5Td7y33Y6yn9D0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ5dW5qaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NDk2MTAyNTYsImV4cCI6MTc0OTYxMzg1Nn0.vH5-AGG40pGdLFTeL1DIOEDTs0x8oogFAxNwBQx9H44
 
 ### 회원 목록 조회 - ADMIN (RageResponse)
 GET http://localhost:8080/api/v1/users/v2?page=0&size=3
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzQ5MzUwNTU2LCJleHAiOjE3NDkzNTQxNTZ9.Y0doNl6bRKOX4GTdFmbgzzwFLPFPEfrCGrSaPzLcgZU
 
-### 회원 정보 수정 - MEMBER
-PATCH http://localhost:8080/api/v1/users/admin/2
-Authorization: Bearer eyyyyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ5dW5qaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNzQ5NDQ5NDk4LCJleHAiOjE3NDk0NTMwOTh9.Xe1YHnXBQy5mxCqw1vorYkrh_TbGHIHyshUTS23Ozmw
-Content-Type: application/json
-
-{
-    "phone" : "010-4321-1111"
-}
-
-
-### 회원 정보 수정 - ADMIN 본인 수정
+### 회원 정보 수정 - ADMIN
 PATCH http://localhost:8080/api/v1/users/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzQ5NTM0NTMyLCJleHAiOjE3NDk1MzgxMzJ9.S3BGsexfTpR1DjqNpl-yGJe80CgIRDQXLYNU3YFJMY0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzQ5NjEwMDY0LCJleHAiOjE3NDk2MTM2NjR9.g6wM-0OEgFxExPZawD0UXOMmztnqjZAqVpNG9nQ9AU0
 Content-Type: application/json
 
 {
-  "name" : "관리자",
+  "name" : "홍길동",
   "phone" : "010-8888-7777",
   "role" : "ADMIN"
 }
 
-
 ### 회원 정보 수정 - ADMIN이 MEMBER 수정하는 상황
 PATCH http://localhost:8080/api/v1/users/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzQ5NTM0NTMyLCJleHAiOjE3NDk1MzgxMzJ9.S3BGsexfTpR1DjqNpl-yGJe80CgIRDQXLYNU3YFJMY0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzQ5NjEwMDY0LCJleHAiOjE3NDk2MTM2NjR9.g6wM-0OEgFxExPZawD0UXOMmztnqjZAqVpNG9nQ9AU0
 Content-Type: application/json
 
 {
   "name" : "지니",
-  "phone" : "010-8888-7777",
+  "phone" : "010-7777-7777",
   "role" : "ADMIN"
 }
 
 ### 회원 정보 수정 - MEMBER
-PATCH http://localhost:8080/api/v1/users/3
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ5dW5qaW43QGV4YW1wbGUuY29tIiwicm9sZSI6Ik1FTUJFUiIsImlhdCI6MTc0OTUzNDczMywiZXhwIjoxNzQ5NTM4MzMzfQ.Fjvi5wu0Y-qPFiCO-Pt5CmYabl10fpXH0hbV_4O-G7I
+PATCH http://localhost:8080/api/v1/users/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ5dW5qaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNzQ5NjEwMDE4LCJleHAiOjE3NDk2MTM2MTh9.IeMo6y4Pntu3nlPNlbs-aWsnWfLOD-7hAebtfo6D3ck
 Content-Type: application/json
 
 {
-  "name" : "길동홍",
-  "phone" : "010-1111-1234",
-  "role" : "ADMIN"
+  "name" : "곽윤진",
+  "phone" : "010-4321-1234",
+  "role" : "MEMBER"
 }
 
