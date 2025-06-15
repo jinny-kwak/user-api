@@ -2,32 +2,21 @@ package com.example.userapi.common.exception
 
 import com.example.userapi.adapter.`in`.web.dto.ApiResponse
 import com.example.userapi.adapter.`in`.web.dto.ResponseFactory
-import com.example.userapi.domain.exception.EmailAlreadyExistException
-import com.example.userapi.domain.exception.InvalidPasswordException
-import com.example.userapi.domain.exception.UserInfoFormattedException
-import com.example.userapi.domain.exception.UserNotFoundException
-import io.jsonwebtoken.MalformedJwtException
+import com.example.userapi.domain.exception.UserException
 import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus.*
+import org.springframework.http.ResponseEntity
 import org.springframework.security.authorization.AuthorizationDeniedException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
-class GlobalExceptionHandler {
+internal class GlobalExceptionHandler {
 
     private val logger: Logger = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
-
-    @ResponseStatus(NOT_FOUND)
-    @ExceptionHandler(UserNotFoundException::class)
-    fun handleNotFoundException(request: HttpServletRequest, ex: UserNotFoundException): ApiResponse<Nothing> {
-        logger.error("존재하지 않는 사용자 발생: ${ex.javaClass.name} ${request.requestURI} ${ex.message}")
-//        logger.error("존재하지 않는 사용자 발생: {} {}", ex.javaClass.name, request.requestURI, ex)
-        return ResponseFactory.fail(ex.getErrorCode(), ex.getErrorMessage())
-    }
 
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException::class)
@@ -44,44 +33,26 @@ class GlobalExceptionHandler {
     }
 
     @ResponseStatus(UNAUTHORIZED)
-    @ExceptionHandler(JwtGenerateTokenException::class)
-    fun jwtGenerateTokenException(ex: JwtGenerateTokenException): ApiResponse<Nothing> {
-        logger.error("JWT 토큰 생성 오류 발생: ${ex.message}", ex)
-        return ResponseFactory.fail(ex.getErrorCode(), ex.getErrorMessage())
-    }
-
-    @ResponseStatus(UNAUTHORIZED)
     @ExceptionHandler(AuthorizationDeniedException::class)
-    fun authorizationDeniedException(ex: AuthorizationDeniedException): ApiResponse<Nothing> {
-        logger.error("JWT 권한 오류 발생: ${ex.message}", ex)
-        return ResponseFactory.fail("INTERNAL_ERROR", ex.message)
+    fun authorizationDeniedException(ex: AuthorizationDeniedException, request: HttpServletRequest): ApiResponse<Nothing> {
+        logger.error("접근 권한 오류 발생: ${ex.javaClass.name} ${request.requestURI}")
+        logger.error("${ex.message}", ex)
+        return ResponseFactory.fail(CommonExceptionConst.AUTH_DENIED_ERROR.name, CommonExceptionConst.AUTH_DENIED_ERROR.resultMessage)
     }
 
-    @ResponseStatus(UNAUTHORIZED)
-    @ExceptionHandler(InvalidJwtFormatException::class)
-    fun malformedJwtException(ex: InvalidJwtFormatException): ApiResponse<Nothing> {
-        logger.error("JWT 토큰 형식 오류 발생: ${ex.message}", ex)
-        return ResponseFactory.fail(ex.getErrorCode(), ex.getErrorMessage())
+    @ExceptionHandler(UserException::class)
+    fun handleUserDomainException(ex: UserException, request: HttpServletRequest): ResponseEntity<ApiResponse<Nothing>> {
+        logger.error("존재하지 않는 사용자 발생: ${ex.javaClass.name} ${request.requestURI}")
+        logger.error("${ex.message}", ex)
+        return ResponseFactory.fail(ex)
     }
 
-    @ResponseStatus(UNAUTHORIZED)
-    @ExceptionHandler(ForbiddenAccessException::class)
-    fun forbiddenAccessException(ex: ForbiddenAccessException): ApiResponse<Nothing> {
-        logger.error("접근 권한 오류 발생: ${ex.message}", ex)
-        return ResponseFactory.fail(ex.getErrorCode(), ex.getErrorMessage())
+    @ExceptionHandler(CommonException::class)
+    fun commonException(ex: CommonException, request: HttpServletRequest): ResponseEntity<ApiResponse<Nothing>> {
+        logger.error("공통 오류 발생: ${ex.javaClass.name} ${request.requestURI}")
+        logger.error("${ex.message}", ex)
+        return ResponseFactory.fail(ex)
     }
 
-    @ResponseStatus(BAD_REQUEST)
-    @ExceptionHandler(UserInfoFormattedException::class)
-    fun userInfoFormattedException(ex: UserInfoFormattedException): ApiResponse<Nothing> {
-        logger.error("회원가입 입력 포맷 오류 발생: ${ex.message}", ex)
-        return ResponseFactory.fail(ex.getErrorCode(), ex.getErrorMessage())
-    }
 
-    @ResponseStatus(BAD_REQUEST)
-    @ExceptionHandler(InvalidPasswordException::class)
-    fun invalidPasswordException(ex: InvalidPasswordException): ApiResponse<Nothing> {
-        logger.error("로그인 비밀번호 불일치: ${ex.message}", ex)
-        return ResponseFactory.fail(ex.getErrorCode(), ex.getErrorMessage())
-    }
 }

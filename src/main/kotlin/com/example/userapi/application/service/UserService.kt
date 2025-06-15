@@ -4,21 +4,18 @@ package com.example.userapi.application.service
 import com.example.userapi.adapter.`in`.web.dto.PageResponse
 import com.example.userapi.adapter.`in`.web.dto.UserPortDto
 import com.example.userapi.adapter.out.persistence.entity.User
-import com.example.userapi.domain.model.UserAdapterDto
-import com.example.userapi.common.security.JwtProvider
 import com.example.userapi.application.port.`in`.UserUseCase
 import com.example.userapi.application.port.out.UserRepositoryPort
-import com.example.userapi.domain.exception.InvalidPasswordException
+import com.example.userapi.common.security.JwtProvider
+import com.example.userapi.domain.exception.UserException
 import com.example.userapi.domain.exception.UserExceptionConst
-import com.example.userapi.domain.exception.UserInfoFormattedException
-import com.example.userapi.domain.exception.UserNotFoundException
+import com.example.userapi.domain.model.UserAdapterDto
 import com.example.userapi.util.isValidEmail
 import com.example.userapi.util.isValidPassword
 import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import kotlin.IllegalArgumentException
 
 
 @Service
@@ -50,13 +47,13 @@ class UserService(
 
     private fun validationSignUp(request: UserPortDto.In.SignUpRequest) {
         if (!isValidEmail(request.email))
-            throw UserInfoFormattedException(UserExceptionConst.NOT_FORMATTED_EMAIL)
+            throw UserException(UserExceptionConst.NOT_FORMATTED_EMAIL)
 
         if (!isValidPassword(request.password))
-            throw UserInfoFormattedException(UserExceptionConst.NOT_FORMATTED_PASSWORD)
+            throw UserException(UserExceptionConst.NOT_FORMATTED_PASSWORD)
 
         if (userRepository.existsByEmail(request.email)) {
-            throw UserInfoFormattedException( UserExceptionConst.ALREADY_EXISTS_EMAIL)
+            throw UserException( UserExceptionConst.ALREADY_EXISTS_EMAIL)
         }
     }
 
@@ -64,10 +61,12 @@ class UserService(
     override fun login(request: UserPortDto.In.LoginRequest): UserPortDto.Out.TokenResponse {
 
         val userDto = userRepository.findByEmail(request.email)
-            ?: throw UserNotFoundException(UserExceptionConst.NOT_EXISTS_USER)
+//            ?: throw UserNotFoundException(UserExceptionConst.NOT_EXISTS_USER)
+            ?: throw UserException(UserExceptionConst.NOT_EXISTS_USER)
 
         if (!passwordEncoder.matches(request.password, userDto.password)) {
-            throw InvalidPasswordException(UserExceptionConst.INVALID_PASSWORD)
+//            throw InvalidPasswordException(UserExceptionConst.INVALID_PASSWORD)
+            throw UserException(UserExceptionConst.INVALID_PASSWORD)
         }
 
     return UserPortDto.Out.TokenResponse(
@@ -79,7 +78,7 @@ class UserService(
     @Transactional(readOnly = true)
     override fun getUserBy(userId: Long): UserPortDto.Out.UserResponse {
         val userDto = userRepository.findById(userId)
-            ?: throw UserNotFoundException(UserExceptionConst.NOT_EXISTS_USER)
+            ?: throw UserException(UserExceptionConst.NOT_EXISTS_USER)
 
         return UserPortDto.Out.UserResponse(
             email = userDto.email,
@@ -125,7 +124,7 @@ class UserService(
         request: UserPortDto.In.UpdateUserInfoRequest
     ): UserPortDto.Out.AdminUpdateResponse {
         val userEntity = userRepository.findByIdOrNull(userId)
-            ?: throw UserNotFoundException(UserExceptionConst.NOT_EXISTS_USER)
+            ?: throw UserException(UserExceptionConst.NOT_EXISTS_USER)
 
         // todo 비밀번호 수정할 경우 인코딩 passwordEncoder.encode(request.password)
         userEntity.updateByMember(request.phone)
@@ -145,7 +144,7 @@ class UserService(
         request: UserPortDto.In.UpdateUserInfoRequest
     ): UserPortDto.Out.AdminUpdateResponse {
         val userEntity = userRepository.findByIdOrNull(userId)
-            ?: throw UserNotFoundException(UserExceptionConst.NOT_EXISTS_USER)
+            ?: throw UserException(UserExceptionConst.NOT_EXISTS_USER)
 
         /**
          * todo 전화번호 수정만 가능하도록 제한

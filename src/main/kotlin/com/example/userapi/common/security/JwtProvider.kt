@@ -1,20 +1,16 @@
 package com.example.userapi.common.security
 
+import com.example.userapi.common.exception.CommonException
 import com.example.userapi.common.exception.CommonExceptionConst
-import com.example.userapi.common.exception.InvalidJwtFormatException
-import com.example.userapi.common.exception.JwtGenerateTokenException
 import com.example.userapi.domain.model.Role
 import com.example.userapi.domain.model.UserAdapterDto
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.util.*
 import javax.crypto.spec.SecretKeySpec
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 /**
  * JWT 생성 및 검증
@@ -49,7 +45,7 @@ class JwtProvider(
                 .signWith(key)
                 .compact()
         } catch (e: Exception) {
-            throw JwtGenerateTokenException(CommonExceptionConst.TOKEN_GENERATE_ERROR)
+            throw CommonException(CommonExceptionConst.TOKEN_GENERATE_ERROR)
         }
     }
 
@@ -63,8 +59,9 @@ class JwtProvider(
         try {
             !parseClaims(token).expiration.before(Date())
         } catch (e: Exception) {
+            println("@@@ JWT validation error: ${e.stackTrace}")
             // todo Exception 세분화 필요
-            throw InvalidJwtFormatException(CommonExceptionConst.TOKEN_FORMAT_ERROR)
+            throw CommonException(CommonExceptionConst.TOKEN_FORMAT_ERROR)
         }
 
     private fun parseClaims(token: String): Claims =
