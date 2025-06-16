@@ -50,7 +50,7 @@ class UserController(
         return ResponseFactory.success(userResponse)
     }
 
-    @GetMapping
+/*    @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     fun getUsers(
@@ -59,16 +59,16 @@ class UserController(
     ): ResponseEntity<ApiResponse<List<UserPortDto.Out.UsersResponse>>> {
         val users = userUseCase.getUsers(pageable, getUsersRequest)
         return ResponseFactory.success(users)
-    }
+    }*/
 
-    @GetMapping("/v2")
+    @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
-    fun getUsers2(
+    fun getUsers(
         pageable: Pageable,
         getUsersRequest: UserPortDto.In.GetUsersRequest
     ): ResponseEntity<ApiResponse<PageResponse<UserPortDto.Out.UsersResponse>>> {
-        val users = userUseCase.getUsers2(pageable, getUsersRequest)
+        val users = userUseCase.getUsers(pageable, getUsersRequest)
         return ResponseFactory.success(users)
     }
 

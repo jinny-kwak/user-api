@@ -37,11 +37,11 @@ class UserRepositoryAdapter(
         return userJpaRepository.findByIdOrNull(userId)
     }
 
-    override fun findAll(pageable: Pageable): List<User> {
+/*    override fun findAll(pageable: Pageable): List<User> {
         return userJpaRepository.findAll(pageable).content
-    }
+    }*/
 
-    override fun findAll2(pageable: Pageable): Page<User> {
+    override fun findAll(pageable: Pageable): Page<User> {
         return userJpaRepository.findAll(pageable)
     }
 

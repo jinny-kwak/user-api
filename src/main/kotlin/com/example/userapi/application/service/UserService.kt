@@ -93,7 +93,7 @@ class UserService(
     }
 
 
-    @Transactional(readOnly = true)
+/*    @Transactional(readOnly = true)
     override fun getUsers(
         pageable: Pageable,
         getUsersRequest: UserPortDto.In.GetUsersRequest
@@ -109,14 +109,14 @@ class UserService(
                 createdAt = userDto.createdAt
             )
         }
-    }
+    }*/
 
     @Transactional(readOnly = true)
-    override fun getUsers2(
+    override fun getUsers(
         pageable: Pageable,
         getUsersRequest: UserPortDto.In.GetUsersRequest
     ): PageResponse<UserPortDto.Out.UsersResponse> {
-        val users = userRepository.findAll2(pageable)
+        val users = userRepository.findAll(pageable)
         return PageResponse<UserPortDto.Out.UsersResponse>().of(users)
     }
 
