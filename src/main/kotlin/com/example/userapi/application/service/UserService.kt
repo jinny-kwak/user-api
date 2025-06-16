@@ -76,7 +76,7 @@ class UserService(
 }
 
     @Transactional(readOnly = true)
-    override fun getUserBy(userId: Long): UserPortDto.Out.UserResponse {
+    override fun getUserById(userId: Long): UserPortDto.Out.UserResponse {
         val userEntity = userRepository.findByIdOrNull(userId)
             ?: throw UserException(UserExceptionConst.NOT_EXISTS_USER)
         val userDto = userEntity.toDomain()

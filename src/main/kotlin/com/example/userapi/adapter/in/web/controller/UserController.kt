@@ -46,7 +46,7 @@ class UserController(
     fun getUser(
         @PathVariable(value = "userId", required = true) userId: Long
     ): ResponseEntity<ApiResponse<UserPortDto.Out.UserResponse>> {
-        val userResponse = userUseCase.getUserBy(userId)
+        val userResponse = userUseCase.getUserById(userId)
         return ResponseFactory.success(userResponse)
     }
 

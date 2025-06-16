@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable
 interface UserUseCase {
     fun signUp(request: UserPortDto.In.SignUpRequest): UserPortDto.Out.SignUpResponse
     fun login(request: UserPortDto.In.LoginRequest): UserPortDto.Out.TokenResponse
-    fun getUserBy(userId: Long): UserPortDto.Out.UserResponse
+    fun getUserById(userId: Long): UserPortDto.Out.UserResponse
 //    fun getUsers(pageable: Pageable, getUsersRequest: UserPortDto.In.GetUsersRequest): List<UserPortDto.Out.UsersResponse>
     fun getUsers(pageable: Pageable, getUsersRequest: UserPortDto.In.GetUsersRequest): PageResponse<UserPortDto.Out.UsersResponse>
     fun updateUserInfoByMember(userId: Long, request: UserPortDto.In.UpdateUserInfoRequest): UserPortDto.Out.AdminUpdateResponse
