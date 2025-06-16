@@ -6,11 +6,10 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 interface UserRepositoryPort {
-    fun save(userAdapterDto: UserAdapterDto?): UserAdapterDto
-    fun findByEmail(email: String): UserAdapterDto?
-    fun findById(id: Long): UserAdapterDto?
+    fun save(userAdapterDto: UserAdapterDto?): User
+    fun findByEmail(email: String): User?
     fun findByIdOrNull(id: Long): User?
-    fun findAll(pageable: Pageable): List<UserAdapterDto>
+    fun findAll(pageable: Pageable): List<User>
     fun findAll2(pageable: Pageable): Page<User>
     fun existsByEmail(email: String): Boolean
 }

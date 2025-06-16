@@ -36,7 +36,8 @@ class UserService(
             phone = request.phone
         )
 
-        val savedUserDto = userRepository.save(userAdapterDto)
+        val userEntity = userRepository.save(userAdapterDto)
+        val savedUserDto = userEntity.toDomain()
 
         return UserPortDto.Out.SignUpResponse(
             email = savedUserDto.email,
@@ -60,12 +61,11 @@ class UserService(
     @Transactional(readOnly = true)
     override fun login(request: UserPortDto.In.LoginRequest): UserPortDto.Out.TokenResponse {
 
-        val userDto = userRepository.findByEmail(request.email)
-//            ?: throw UserNotFoundException(UserExceptionConst.NOT_EXISTS_USER)
+        val userEntity = userRepository.findByEmail(request.email)
             ?: throw UserException(UserExceptionConst.NOT_EXISTS_USER)
+        val userDto = userEntity.toDomain()
 
         if (!passwordEncoder.matches(request.password, userDto.password)) {
-//            throw InvalidPasswordException(UserExceptionConst.INVALID_PASSWORD)
             throw UserException(UserExceptionConst.INVALID_PASSWORD)
         }
 
@@ -77,8 +77,9 @@ class UserService(
 
     @Transactional(readOnly = true)
     override fun getUserBy(userId: Long): UserPortDto.Out.UserResponse {
-        val userDto = userRepository.findById(userId)
+        val userEntity = userRepository.findByIdOrNull(userId)
             ?: throw UserException(UserExceptionConst.NOT_EXISTS_USER)
+        val userDto = userEntity.toDomain()
 
         return UserPortDto.Out.UserResponse(
             email = userDto.email,
@@ -97,14 +98,15 @@ class UserService(
         pageable: Pageable,
         getUsersRequest: UserPortDto.In.GetUsersRequest
     ): List<UserPortDto.Out.UsersResponse> {
-        val users = userRepository.findAll(pageable)
+        val userEntities = userRepository.findAll(pageable)
 
-        return users.map { userAdapterDto ->
+        return userEntities.map { user ->
+            val userDto = user.toDomain()
             UserPortDto.Out.UsersResponse(
-                name = userAdapterDto.name,
-                email = userAdapterDto.email,
-                phone = userAdapterDto.phone,
-                createdAt = userAdapterDto.createdAt
+                name = userDto.name,
+                email = userDto.email,
+                phone = userDto.phone,
+                createdAt = userDto.createdAt
             )
         }
     }

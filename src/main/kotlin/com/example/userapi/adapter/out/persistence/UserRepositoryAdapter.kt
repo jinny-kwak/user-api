@@ -15,7 +15,7 @@ class UserRepositoryAdapter(
     private val userJpaRepository: UserJpaRepository
 ) : UserRepositoryPort {
 
-    override fun save(userAdapterDto: UserAdapterDto?): UserAdapterDto {
+    override fun save(userAdapterDto: UserAdapterDto?): User {
         // New 유저 객체 생성
         val user = User(
             email = userAdapterDto?.email,
@@ -26,24 +26,19 @@ class UserRepositoryAdapter(
             lastActiveAt = userAdapterDto?.lastActiveAt
         )
 
-        val savedUser = userJpaRepository.save(user)
-        return savedUser.toDomain()
+        return userJpaRepository.save(user)
     }
 
-    override fun findByEmail(email: String): UserAdapterDto? {
-        return userJpaRepository.findByEmail(email)?.toDomain()
+    override fun findByEmail(email: String): User? {
+        return userJpaRepository.findByEmail(email)
     }
 
     override fun findByIdOrNull(userId: Long): User? {
         return userJpaRepository.findByIdOrNull(userId)
     }
 
-    override fun findById(userId: Long): UserAdapterDto? {
-        return userJpaRepository.findById(userId).orElse(null).toDomain()
-    }
-
-    override fun findAll(pageable: Pageable): List<UserAdapterDto> {
-        return userJpaRepository.findAll(pageable).content.map { it.toDomain() }
+    override fun findAll(pageable: Pageable): List<User> {
+        return userJpaRepository.findAll(pageable).content
     }
 
     override fun findAll2(pageable: Pageable): Page<User> {
