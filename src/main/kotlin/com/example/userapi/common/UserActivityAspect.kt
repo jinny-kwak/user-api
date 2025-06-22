@@ -3,8 +3,10 @@ package com.example.userapi.common
 import com.example.userapi.adapter.out.persistence.entity.User
 import com.example.userapi.adapter.out.persistence.repository.UserJpaRepository
 import com.example.userapi.application.port.out.UserRepositoryPort
+import com.example.userapi.domain.model.CustomUserDetails
 import com.example.userapi.domain.model.UserAdapterDto
 import org.aspectj.lang.annotation.After
+import org.aspectj.lang.annotation.AfterReturning
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Pointcut
 import org.slf4j.Logger
@@ -27,7 +29,7 @@ class UserActivityAspect(
     private val logger: Logger = LoggerFactory.getLogger(UserActivityAspect::class.java)
 
     // 로그인 성공 후 lastActiveAt 갱신
-    //@After("execution(* com.example.userapi.adapter.in.web.controller.UserController.login(..))")
+    //@AfterReturning("execution(* com.example.userapi.adapter.in.web.controller.UserController.login(..))")
     @Transactional
     fun updateLastActiveAtAfterLogin() {
         val currentUser = getCurrentUser()
@@ -57,11 +59,13 @@ class UserActivityAspect(
     }
 
     private fun getCurrentUser(): User? {
+        val getContext = SecurityContextHolder.getContext()
         val authentication = SecurityContextHolder.getContext().authentication
+
         val principal = authentication?.principal
 
         // 인증되지 않은 사용자가 접근한 경우, 예외 대신 로그에만 기록하고 401 응답을 보냄
-        return (if (principal is org.springframework.security.core.userdetails.User) {
+        return (if (principal is CustomUserDetails) {
             val email = principal.username  // 이메일을 사용자 식별자로 사용
             //userRepository.findByEmail(email) // 이메일로 사용자를 찾는 메서드 호출
             userJpaRepository.findByEmail(email)
