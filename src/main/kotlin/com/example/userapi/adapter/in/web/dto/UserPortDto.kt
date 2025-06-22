@@ -22,6 +22,13 @@ class UserPortDto {
             val endDate: LocalDateTime? = null
         )
 
+        data class UpdateUserInfoRequest(
+            //val password: String,
+            val name: String,
+            val phone: String,
+            val role: Role
+        )
+
         data class UpdateMemberRequest(
             val phone: String
         )
@@ -33,12 +40,16 @@ class UserPortDto {
             val role: Role
         )
 
-        data class UpdateUserInfoRequest(
-            //val password: String,
-            val name: String,
-            val phone: String,
-            val role: Role
-        )
+        companion object {
+            fun from(): SignUpRequest {
+                return SignUpRequest(
+                    email = "",
+                    password = "",
+                    name = "",
+                    phone = ""
+                )
+            }
+        }
 
     }
 
@@ -65,8 +76,8 @@ class UserPortDto {
         )
 
         data class UsersResponse(
-            val name: String,
             val email: String,
+            val name: String,
             val phone: String,
             val createdAt: LocalDateTime
         )

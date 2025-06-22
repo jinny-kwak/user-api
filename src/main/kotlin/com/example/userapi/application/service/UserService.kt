@@ -2,11 +2,13 @@ package com.example.userapi.application.service
 
 
 import com.example.userapi.adapter.`in`.web.dto.PageResponse
+import com.example.userapi.adapter.`in`.web.dto.UserAdapterDtoV2
 import com.example.userapi.adapter.`in`.web.dto.UserPortDto
 import com.example.userapi.adapter.out.persistence.entity.User
 import com.example.userapi.application.port.`in`.UserUseCase
 import com.example.userapi.application.port.out.UserRepositoryPort
 import com.example.userapi.common.security.JwtProvider
+import com.example.userapi.domain.dto.UserPortDtoV2
 import com.example.userapi.domain.exception.UserException
 import com.example.userapi.domain.exception.UserExceptionConst
 import com.example.userapi.domain.model.UserAdapterDto
@@ -26,9 +28,11 @@ class UserService(
 ) : UserUseCase {
 
     @Transactional
-    override fun signUp(request: UserPortDto.In.SignUpRequest): UserPortDto.Out.SignUpResponse {
+//    override fun signUp(request: UserPortDto.In.SignUpRequest): UserPortDto.Out.SignUpResponse {
+    override fun signUp(request: UserPortDtoV2.In.SignUpRequest): UserPortDto.Out.SignUpResponse {
         validationSignUp(request)
 
+        // todo Port로 변경
         val userAdapterDto = UserAdapterDto(
             email = request.email,
             password = passwordEncoder.encode(request.password),
@@ -36,7 +40,7 @@ class UserService(
             phone = request.phone
         )
 
-        val userEntity = userRepository.save(userAdapterDto)
+        val userEntity = userRepository.save(userAdapterDto) // todo save() 파라미터 port로 변경
         val savedUserDto = userEntity.toDomain()
 
         return UserPortDto.Out.SignUpResponse(
@@ -46,7 +50,8 @@ class UserService(
         )
     }
 
-    private fun validationSignUp(request: UserPortDto.In.SignUpRequest) {
+//    private fun validationSignUp(request: UserPortDto.In.SignUpRequest) {
+    private fun validationSignUp(request: UserPortDtoV2.In.SignUpRequest) {
         if (!isValidEmail(request.email))
             throw UserException(UserExceptionConst.NOT_FORMATTED_EMAIL)
 

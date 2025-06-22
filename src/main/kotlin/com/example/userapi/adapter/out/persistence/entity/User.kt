@@ -38,7 +38,6 @@ class User(
     var lastActiveAt: LocalDateTime? = LocalDateTime.now()
 ) : BaseTimeEntity() {
 
-    // 기본 생성자 추가
     constructor() : this(
         email = null,
         password = null,
@@ -48,14 +47,14 @@ class User(
         lastActiveAt = null
     )
 
-    fun toDomain(): UserAdapterDto { // todo UserAdapterDto로 옮겨야하는거 아닌가.
+    fun toDomain(): UserAdapterDto {
         return UserAdapterDto(
             id = id,
-            email = email ?: "",  // null 체크 후 기본값 제공
-            password = password ?: "",  // null 체크 후 기본값 제공
-            name = name ?: "",  // null 체크 후 기본값 제공
-            phone = phone ?: "",  // null 체크 후 기본값 제공
-            role = role ?: Role.MEMBER,  // null 체크 후 기본값 제공
+            email = email ?: "",
+            password = password ?: "",
+            name = name ?: "",
+            phone = phone ?: "",
+            role = role ?: Role.MEMBER,
             createdAt = createdAt ?: LocalDateTime.now(),
             updatedAt = updatedAt ?: LocalDateTime.now(),
             lastActiveAt = lastActiveAt ?: LocalDateTime.now()

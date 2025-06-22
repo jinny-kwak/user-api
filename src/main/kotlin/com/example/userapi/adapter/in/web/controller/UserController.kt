@@ -3,10 +3,12 @@ package com.example.userapi.adapter.`in`.web.controller
 import com.example.userapi.adapter.`in`.web.dto.ApiResponse
 import com.example.userapi.adapter.`in`.web.dto.PageResponse
 import com.example.userapi.adapter.`in`.web.dto.ResponseFactory
+import com.example.userapi.adapter.`in`.web.dto.UserAdapterDtoV2
 import com.example.userapi.adapter.`in`.web.dto.UserPortDto
 import com.example.userapi.application.port.`in`.UserUseCase
 import com.example.userapi.common.exception.CommonException
 import com.example.userapi.common.exception.CommonExceptionConst
+import com.example.userapi.domain.dto.UserPortDtoV2
 import com.example.userapi.domain.model.CustomUserDetails
 import com.example.userapi.domain.model.Role
 import jakarta.validation.Valid
@@ -26,9 +28,11 @@ class UserController(
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
     fun signUp(
-        @Valid @RequestBody request: UserPortDto.In.SignUpRequest
+//        @Valid @RequestBody request: UserPortDto.In.SignUpRequest
+        @Valid @RequestBody request: UserAdapterDtoV2.In.SignUpRequest
     ): ResponseEntity<ApiResponse<UserPortDto.Out.SignUpResponse>> {
-        val signUpResponse = userUseCase.signUp(request)
+//        val signUpResponse = userUseCase.signUp(request)
+        val signUpResponse = userUseCase.signUp(UserPortDtoV2.In.from(request))
         return ResponseFactory.success(signUpResponse)
     }
 
