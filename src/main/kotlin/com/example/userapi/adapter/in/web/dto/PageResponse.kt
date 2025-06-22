@@ -18,7 +18,7 @@ data class PageResponse<T>(
         this.totalPages = page.totalPages // 전체 페이지의 수 (전체 항목수 /페이지 크기)
         this.currentPage = page.pageable.pageNumber // 현재 페이지 번호 (0부터 시작)
         this.sort = PageSort.of(page.sort)
-        this.content = page.content as List<T> //{ it.toDomain() as T } // todo DTO 커스텀 변환 처리
+        this.content = page.content as List<T> //{ it.toDomain() as T } // 데이터
         return this
     }
 
